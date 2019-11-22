@@ -1,0 +1,6 @@
+{
+    "eslint.options": {
+        "configFile": "./.eslintrc.js",
+        "plugins": [ "html" ]
+    },
+}
