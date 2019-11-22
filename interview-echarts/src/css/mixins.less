@@ -1,0 +1,50 @@
+/**
+ * 设置宽高
+*/
+.setWH( @w: 100%, @h: @w ) {
+    width: @w;
+    height: @h;
+}
+
+/**
+ * 设置圆环
+*/
+.setBorder( @b, @bgc: #95c4f5 ) {
+    border-radius: 50%;
+    border: @b solid @bgc;
+}
+.setCircle( @wh, @b, @rotate) {
+    .setBorder( @b );
+    position: relative;
+    box-sizing: border-box;
+
+    &::after, &::before {
+        content: "";
+        .setWH();
+        .setBorder( @b, #446fd2 );
+        position: absolute;
+        top: -@b;
+        left: -@b;
+    }
+    &::after {
+        clip: rect(0 @wh/2 @wh 0);
+        transform: rotate( -@rotate );
+    }
+    &::before {
+        clip: rect(0 @wh @wh @wh/2);
+    }
+}
+
+/**
+ * 绝对定位 + translate 居中
+*/
+.setCenter() {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    & {
+        position: relative;
+    }
+}

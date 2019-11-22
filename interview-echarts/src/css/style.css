@@ -1,0 +1,307 @@
+@font-face {
+  font-family: "MicrosoftYaHei";
+  src: url("../../static/fonts/MicrosoftYaHei.ttf");
+}
+@font-face {
+  font-family: "MyriadPro Regular";
+  src: url("../../static/fonts/MyriadPro Regular.otf");
+}
+@font-face {
+  font-family: "Arial BoldMT";
+  src: url("../../static/fonts/arial-boldmt.otf");
+}
+body {
+  font-family: 'MicrosoftYaHei';
+  color: #666;
+}
+body,
+ul,
+li,
+h1,
+p {
+  padding: 0;
+  margin: 0;
+}
+ul,
+li {
+  list-style: none;
+}
+/* 辅助类 */
+.clearfix::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.fw {
+  color: #fff;
+}
+/* 字体 */
+.mp {
+  font-family: "MyriadPro Regular";
+}
+.ab {
+  font-family: "Arial BoldMT";
+}
+/**
+ * 设置宽高
+*/
+/**
+ * 设置圆环
+*/
+/**
+ * 绝对定位 + translate 居中
+*/
+canvas {
+  background-color: #fff;
+}
+.container {
+  width: 1135px;
+  height: auto;
+  padding: 16px;
+  background-color: #f1f1f1;
+  color: #666;
+  padding-bottom: 0;
+  /* 头部视图 */
+  /* echarts */
+}
+.container .tit {
+  overflow: hidden;
+  margin-right: -1px;
+  background-color: #fff;
+}
+.container .tit li.svg {
+  width: 284px;
+  float: left;
+  position: relative;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  /* 图标 */
+}
+.container .tit li.svg::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 60px;
+  background-color: #ddd;
+}
+.container .tit li.svg .icon {
+  float: left;
+  padding-left: 30px;
+  padding-right: 15px;
+  margin: auto;
+  position: relative;
+}
+.container .tit li.svg .icon img,
+.container .tit li.svg .icon .circle {
+  width: 56px;
+  height: 56px;
+}
+.container .tit li.svg .icon .circle {
+  border-radius: 50%;
+  border: 6px solid #95c4f5;
+  position: relative;
+  box-sizing: border-box;
+}
+.container .tit li.svg .icon .circle::after,
+.container .tit li.svg .icon .circle::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6px solid #446fd2;
+  position: absolute;
+  top: -6px;
+  left: -6px;
+}
+.container .tit li.svg .icon .circle::after {
+  clip: rect(0 28px 56px 0);
+  transform: rotate(-36deg);
+}
+.container .tit li.svg .icon .circle::before {
+  clip: rect(0 56px 56px 28px);
+}
+.container .tit li.svg .icon .num {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  position: relative;
+  font-size: 16px;
+  text-align: center;
+}
+.container .tit li.svg .info {
+  overflow: hidden;
+}
+.container .tit li.svg .info .txt {
+  margin-top: 8px;
+  font-size: 30px;
+}
+.container .tit .svg:last-of-type::after {
+  width: 283px;
+  border-style: none;
+  content: none;
+}
+.container .tit canvas {
+  width: 284px;
+  float: left;
+}
+.container .view {
+  /* s1 s3 */
+  margin-right: -16px;
+  overflow: hidden;
+  padding-top: 16px;
+}
+.container .view li.section {
+  float: left;
+  width: 559.5px;
+  height: 380px;
+  background-color: #fff;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  padding: 20px;
+}
+.container .view li.section .info {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+.container .view li.section .info > span {
+  font-size: 14px;
+  float: right;
+  padding-left: 36px;
+  position: relative;
+  font-weight: normal;
+  line-height: 24px;
+}
+.container .view li.section .info > span::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: black;
+  border-radius: 50%;
+}
+.container .view li.section .info > span:nth-child(1)::before {
+  background-color: #ffc929;
+}
+.container .view li.section .info > span:nth-child(2)::before {
+  background-color: #95c3f5;
+}
+.container .view li.section .info > span:nth-child(3)::before {
+  background-color: #577bcf;
+}
+.container .view li.section .info > span:nth-child(4)::before {
+  background-color: #69d1a8;
+}
+.container .view li.section .c {
+  text-align: center;
+  margin-bottom: 22px;
+}
+.container .view li.section .c li {
+  float: left;
+  width: 25%;
+}
+.container .view li.section .c .t {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.container .view li.section .c .num {
+  font-size: 24px;
+}
+.container .view li.section .canvs {
+  position: relative;
+  height: 206px;
+}
+.container .view li.section.s2 .info > span:nth-child(1)::before {
+  background-color: #69d1a8;
+}
+.container .view li.section.s2 .info > span:nth-child(2)::before {
+  background-color: #4d78dc;
+}
+.container .view li.section.s2 .info > span:nth-child(3)::before {
+  background-color: #ffc929;
+}
+.container .view li.section.s2 .info > span:nth-child(4)::before {
+  background-color: #ff6152;
+}
+.container .view li.section.s5 .info,
+.container .view li.section.s6 .info {
+  position: relative;
+}
+.container .view li.section.s5 .info > span:nth-child(4)::before,
+.container .view li.section.s6 .info > span:nth-child(4)::before {
+  background-color: #95c3f5;
+}
+.container .view li.section.s5 .info > span:nth-child(5)::before,
+.container .view li.section.s6 .info > span:nth-child(5)::before {
+  background-color: #577bcf;
+}
+.container .view li.section.s5 .info .txt,
+.container .view li.section.s6 .info .txt {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: normal;
+  color: #666;
+}
+.container .view li.section.s5 .line,
+.container .view li.section.s6 .line {
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  width: 1px;
+  background-color: black;
+  height: 16px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+.container .view li.section.s5 .on-off,
+.container .view li.section.s6 .on-off {
+  display: inline-block;
+  color: #666;
+  font-size: 16px;
+  font-weight: normal;
+  margin-left: 30px;
+}
+.container .view li.section.s5 .on-off .fw.l,
+.container .view li.section.s6 .on-off .fw.l {
+  background-color: #577bcf;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right-style: none;
+  border-right-width: 0;
+}
+.container .view li.section.s5 .on-off .r,
+.container .view li.section.s6 .on-off .r {
+  border-left-style: none;
+}
+.container .view li.section.s5 .on-off > span,
+.container .view li.section.s6 .on-off > span {
+  padding: 7px 14px;
+  border: 1px solid #cecece;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin: 0;
+}
+canvas.b {
+  width: 519.5px;
+  height: 286px;
+}
+canvas {
+  width: 519.5px;
+  height: 206px;
+}

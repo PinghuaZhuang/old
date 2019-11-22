@@ -1,0 +1,50 @@
+@font-face {
+  font-family: "MicrosoftYaHei";
+  src: url("../../static/fonts/MicrosoftYaHei.ttf");
+}
+@font-face {
+  font-family: "MyriadPro Regular";
+  src: url("../../static/fonts/MyriadPro Regular.otf");
+}
+@font-face {
+  font-family: "Arial BoldMT";
+  src: url("../../static/fonts/arial-boldmt.otf");
+}
+body {
+  font-family: 'MicrosoftYaHei';
+  color: #666;
+}
+body,
+ul,
+li,
+h1,
+p {
+  padding: 0;
+  margin: 0;
+}
+ul,
+li {
+  list-style: none;
+}
+/* 辅助类 */
+.clearfix::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.fw {
+  color: #fff;
+}
+/* 字体 */
+.mp {
+  font-family: "MyriadPro Regular";
+}
+.ab {
+  font-family: "Arial BoldMT";
+}

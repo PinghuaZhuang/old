@@ -1,0 +1,44 @@
+@import "./font.less";
+
+body {
+    // width: 100%;
+    // height: 100%;
+    // overflow: hidden;
+    font-family: 'MicrosoftYaHei';
+    color: #666;
+}
+
+body, ul, li, h1, p {
+    padding: 0;
+    margin: 0;
+}
+
+ul, li {
+    list-style: none;
+}
+
+/* 辅助类 */
+.clearfix {
+    &::after {
+        display: block;
+        content: "";
+        clear: both;
+    }
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.fw {
+    color: #fff;
+}
+
+/* 字体 */
+.mp {
+    font-family: "MyriadPro Regular";
+}
+.ab {
+    font-family: "Arial BoldMT";
+}

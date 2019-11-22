@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>质量管控</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script data-main="./main.js" src="./assets/require.min.js"></script>
+</head>
+<body>
+
+    <main class="container">
+
+        <!-- 头部视图 开始 -->
+        <ul class="tit clearfix">
+            <li class="svg">
+                <div class="icon">
+                    <img src="../static/images/ico_routing inspection.png" alt="" srcset="">
+                </div>
+                <div class="info">
+                    <div class="t">今日巡查总数</div>
+                    <div class="txt ab">4,452</div>
+                </div>
+            </li>
+            <li class="svg">
+                <div class="icon">
+                    <div class="circle"><div class="num ab">80%</div></div>
+                </div>
+                <div class="info">
+                    <div class="t">本月问题闭环数</div>
+                    <div class="txt ab">2,335</div>
+                </div>
+            </li>
+            <li class="svg">
+                <div class="icon">
+                    <img src="../static/images/ico_problem-pending.png" alt="" srcset="">
+                </div>
+                <div class="info">
+                    <div class="t">本月等待处理的问题</div>
+                    <div class="txt ab">120</div>
+                </div>
+            </li>
+            <li class="svg">
+                <div class="icon">
+                    <img src="../static/images/ico_problem-new.png" alt="" srcset="">
+                </div>
+                <div class="info">
+                    <div class="t">本月新增问题</div>
+                    <div class="txt ab">29</div>
+                </div>
+            </li>
+        </ul>
+        <!-- 头部视图 结束 -->
+
+        <!-- echarts 开始 -->
+        <ul class="view clearfix">
+            <li class="section s1">
+                <div class="info">
+                    项目总进度
+                    <span>建设单位</span>
+                    <span>监理单位</span>
+                    <span>总包单位</span>
+                    <span>质量巡查</span>
+                </div>
+                <ul class="c clearfix">
+                    <li>
+                        <p class="t">质量巡查总数</p>
+                        <p class="num ab">356</p>
+                    </li>
+                    <li>
+                        <p class="t">总包单位</p>
+                        <p class="num ab">234</p>
+                    </li>
+                    <li>
+                        <p class="t">监理单位</p>
+                        <p class="num ab">56</p>
+                    </li>
+                    <li>
+                        <p class="t">建设单位</p>
+                        <p class="num ab">76</p>
+                    </li>
+                </ul>
+
+                <div class="canvs">
+                    <!-- <canvas id="progress" width="519.5" height="280"></canvas> -->
+                    <canvas id="progress" width="519.5" height="206"></canvas>
+                </div>
+            </li>
+            <li class="section s2">
+                    <div class="info">
+                            问题统计数量TOP10
+                            <span>已关闭</span>
+                            <span>待验证</span>
+                            <span>待整改</span>
+                            <span>已逾期</span>
+                        </div>
+
+                        <div class="canvs">
+                            <!-- <canvas id="progress" width="519.5" height="280"></canvas> -->
+                            <canvas id="top" class="b" width="519.5" height="286"></canvas>
+                        </div>
+            </li>
+            <li class="section s3">
+                <div class="info">
+                    问题闭环情况
+                    <span>西明挖断</span>
+                    <span>盾构断</span>
+                    <span>东明挖断</span>
+                </div>
+                <ul class="c clearfix">
+                    <li>
+                        <p class="t">问题闭环率</p>
+                        <p class="num ab">388</p>
+                    </li>
+                    <li>
+                        <p class="t">问题闭环总数</p>
+                        <p class="num ab">80.02%</p>
+                    </li>
+                    <li>
+                        <p class="t">近7天闭环率</p>
+                        <p class="num ab">4,368</p>
+                    </li>
+                    <li>
+                        <p class="t">近7天闭环总数</p>
+                        <p class="num ab">89.02%</p>
+                    </li>
+                </ul>
+
+                <div class="canvs">
+                    <!-- <canvas id="progress" width="519.5" height="280"></canvas> -->
+                    <canvas id="problem" width="519.5" height="206"></canvas>
+                </div>
+            </li>
+            <li class="section s4">
+                <div class="info">
+                    工序验收情况
+                </div>
+                <ul class="c clearfix">
+                    <li>
+                        <p class="t">验收合格率</p>
+                        <p class="num ab">98.34%</p>
+                    </li>
+                    <li>
+                        <p class="t">验收总量</p>
+                        <p class="num ab">2,334</p>
+                    </li>
+                    <li>
+                        <p class="t">近7天验收合格</p>
+                        <p class="num ab">98.34%</p>
+                    </li>
+                    <li>
+                        <p class="t">近7天验收总量</p>
+                        <p class="num ab">342</p>
+                    </li>
+                </ul>
+
+                <div class="canvs">
+                    <!-- <canvas id="progress" width="519.5" height="280"></canvas> -->
+                    <canvas id="check" width="519.5" height="206"></canvas>
+                </div>
+            </li>
+            <li class="section s5">
+                <div class="info">
+                    盾构推进质量 <i class="line"></i>
+                    <div class="txt">轴线控制</div>
+                    <div class="on-off fw fr">
+                        <span class="fw l">近10环</span><span class="r">最新环</span>
+                    </div>
+                    <span>切</span>
+                    <span>尾</span>
+                </div>
+
+                <div class="canvs">
+                    <!-- <canvas id="progress" width="519.5" height="280"></canvas> -->
+                    <canvas id="shield" class="b" width="519.5" height="286"></canvas>
+                </div>
+            </li>
+            <li class="section s6">
+                <div class="info">
+                    盾构推进质量 <i class="line"></i>
+                    <div class="txt">筒片变形椭圆度</div>
+                </div>
+
+                <div class="canvs">
+                    <!-- <canvas id="progress" width="519.5" height="280"></canvas> -->
+                    <canvas id="transform" class="b" width="519.5" height="286"></canvas>
+                </div>
+            </li>
+        </ul>
+        <!-- echarts 结束 -->
+
+    </main>
+
+</body>
+</html>
