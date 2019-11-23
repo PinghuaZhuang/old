@@ -1,0 +1,614 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>i18可视化转换</title>
+  <link href="/static/index.css" rel="stylesheet"></head>
+  <!-- 公用组件 -->
+  <!-- <link rel="import" href="template.html"> -->
+</head>
+
+<body>
+    <div id="app">
+        <div :class="'loading '+loadingClass">
+            <div class="msg">{{loadingMsg}}</div>
+        </div>
+        <div :class="'alert '+msg.show" v-html="msg.text"></div>
+        <div :class="'confirm '+confirm.show">
+            <div :class="'con '+confirm.show">
+                <div class="text" v-html="confirm.text"></div>
+                <div class="an">
+                    <div class="btn yes" @click.stop="confirm.yes">确定</div>
+                    <div class="btn" @click.stop="confirm.not">取消</div>
+                </div>
+            </div>
+        </div>
+        <div class="info">
+            <div :class="'mod config '+(isFirstGo?'':'events')">
+                <div class="title" v-if="isFirstGo">项目信息</div>
+                <ul>
+                    <li>
+                        <label>
+                            <span>项目路径</span>
+                            <input type="text" v-model="projectConfig.path" @input="pathChange"
+                            placeholder="避免填写的路径文件数量过多"
+                            style="width: 400px;" />
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <span>项目类型</span>
+                            <select v-model="projectConfig.type">
+                                <option v-for="(t,i) in projectConfig.list" :value="t.type">
+                                    {{t.title}}
+                                </option>
+                            </select>
+                        </label>
+                        &nbsp; &nbsp;
+                        <label>
+                            <span>翻译规则</span>
+                            <select v-model="projectConfig.translateRule">
+                                <option value="auto">自动</option>
+                                <option value="not">不翻译</option>
+                            </select>
+                        </label>
+                    </li>
+                    <li>
+                        自动抓取英文单词做为字段名，单词结束前最长<input v-model="longName" class="longName" type="number"/>个字符
+                    </li>
+                </ul>
+                <div v-if="isFirstGo" class="btn yes" @click="againFirstGo">重新抓取</div>
+                <div v-else class="btn yes" @click="firstGo">确定</div>
+            </div>
+            <div class="mod goInfo" v-if="isFirstGo">
+                <div class="title" v-if="isFirstGo">生成配置</div>
+                <div class="p">
+                    当前总数量：{{cnAllNum}}；上一次数量：{{oldCnAllNum}}；文件数量：{{fileNum}}；
+                </div>
+                <div class="p">
+                    字段名统一加入前缀 <input v-model="fieldBefore" @change="setFieldBefore(false)" placeholder="无" />
+                </div>
+                <div class="p">
+                    按子目录追加前缀
+                    <select v-model="catalogBeforeNum" @change="setCatalogBefore">
+                        <option :value="0">不追加</option>
+                        <option :value="1">追加一级</option>
+                        <option :value="2">追加二级</option>
+                        <option :value="3">追加三级</option>
+                        <option :value="10">追加所有</option>
+                    </select>
+                    <font color="#999">(只追加到同一字段不同文件下的最深相同路径)</font>
+                </div>
+                <div class="p">
+                    保存路径 
+                    <select v-model="catalogPath" style="width: 180px;">
+                        <option value="save">easyi18n项目下的save中</option>
+                        <option value="replace">直接替换项目文件</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="notData" v-if="isFirstGo&&cnAllNum==0">
+            无任何可转译的中文~
+        </div>
+        <ul class="appList" v-else>
+            <li v-for="(t,v) in cnList" :key="v" :class="`${t.on} ${t.filter?'liFilter':''}`">
+                <div class="cnt" @click="on(t)">
+                    <i class="ic-gengduo"></i>
+                    <font>{{v}}</font>
+                    <div class="input" @click.stop>
+                        <i v-if="t.filter" title="点击恢复当前字段翻译" class="filter ic-hulvekaobei" @click.stop="filterField(t)"></i>
+                        <i v-else title="点击忽略当前字段翻译" class="filter ic-dagou" @click.stop="filterField(t)"></i>
+                        <input class="inputField" :id="'inputField'+v" v-model="t.fieldName" placeholder="字段名"/>
+                        <input class="inputCn" v-model="t.cn" disabled placeholder="中文翻译"/>
+                        <input class="inputEn" v-model="t.en" placeholder="英文翻译" />
+                    </div>
+                </div>
+                <ul class="child" v-if="t.on=='show'">
+                    <li v-for="(t1,v1) in t.children" :key="v1">
+                        <div class="file">
+                            <font>{{t1.parent.filePath}}</font>
+                            <select v-model="t1.type">
+                                <option value="lable">html内容</option>
+                                <option value="attr">attr属性</option>
+                                <option value="js">js</option>
+                            </select>
+                            <div class="inputI18">{{getI18(t1,t.fieldName)}}</div>
+                        </div>
+                        <pre v-if="t1.type=='js'" v-html="t1.parent.content"></pre>
+                        <xmp v-else v-html="t1.parent.content"></xmp>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="bottomSubmit" v-if="isFirstGo&&cnAllNum!=0">
+            <div class="con">
+                <a class="btn submit" @click="submit">保存</a>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="./static/app.js"></script>
+<script>
+let app;
+const that=new Vue({
+    el:'#app',
+    data:{
+        msg:{},
+        confirm:{},
+        projectConfig:{//项目类型
+            type:'vue',//默认vue项目
+            path:'',//源码绝对路径
+            translateRule:'auto',//自动翻译
+            list:{
+                vue:{
+                    type:'vue',
+                    title:'vue项目',
+                    format:{//匹配格式
+                        'vue':true,
+                        'js':true,
+                    },
+                    formatPoint:{
+                        vue:{
+                            point:'html',
+                        }
+                    }
+                },
+                react:{
+                    type:'react',
+                    title:'react项目',
+                    format:{//匹配格式
+                        'js':true,
+                    },
+                    formatPoint:{//格式解析指向，不配置则默认格式（如react中js其实包含html，而本身html包含js，所以react的js可以视为html解析）
+                        js:{
+                            point:'html',
+                        },
+                    }
+                },
+            }
+        },
+        projectType:'vue',//转换类型
+        fieldBefore:'',//字段前缀
+        catalogBeforeNum:0,//目录追溯名数量
+        isFirstGo:false,
+        cnAllNum:0,//所有查找到的中文数量
+        longName:15,
+        fileNum:0,
+        loadingClass:'',
+        loadingMsg:'',
+        catalogPath:'save',//文件保存路径
+        oldCnAllNum:localStorage.oldNumList,
+        cnList:{},//不重复中文列表与统计
+    },
+    created(){
+        if(localStorage.projectConfig){//读取上一次配置
+            this.projectConfig=JSON.parse(localStorage.projectConfig);
+        }
+    },
+    methods:{
+        againFirstGo(){//重新抓取
+            app.confirm('重新抓取将丢失当前内容，确定执行？',async function(){
+                let success=await that.firstGo();
+
+                app.loadEnd(function(){
+                    that.setCatalogBefore();
+                    that.setFieldBefore();
+                });
+            })
+        },
+        async firstGo(){//初始化，获取文件列表
+            app=getApp(this);//重新获取app
+
+            this.cnAllNum=this.cnNum=0;
+
+            let config=this.getConfig(false);
+            if(!config)return;
+            let list=await app.ajax({
+                url:'/api',
+                type:'post',
+                msg:'获取文件列表..',
+                data:{fun:'getFileData',config},
+                loadingDelay:1000,//延迟关闭加载中
+            });
+            
+            this.cnList={};
+            that.setCnList(app.fileList=list);
+            
+            this.isFirstGo=true;
+            localStorage.projectConfig=JSON.stringify(this.projectConfig);
+
+            this.setKeyNum();
+
+            return true;
+        },
+        pathChange(){//验证修改路径值
+            let path=this.projectConfig.path.replace(/\\/g,'/').trim();
+            this.$set(this.projectConfig,'path',path);
+        },
+        getConfig(isStatic=true){//获取配置信息
+
+            let config=this.projectConfig;
+
+            //设置保存路径
+            switch(this.catalogPath){
+                case 'save':
+                    config.savePathName='save'+config.path.match(/\/[^\/]+?\/*?$/)[0];
+                break;
+                case 'replace':
+                    config.savePathName=config.path;
+                break;
+            }
+
+            if(isStatic&&app.newProjectConfig){
+                app.newProjectConfig.savePathName=config.savePathName;
+                return app.newProjectConfig;//已经存在配置，不在重新生成
+            }
+            
+            if(!config.path)return app.alert('请输入项目路径');
+
+            if(
+                config.path[0]!='/'&&
+                /^[a-zA-Z]:/.test(config.path)==false
+            )return app.alert('请输入绝对路径');
+            
+
+            config.path=config.path.replace(/\/$/,'');//去除结尾斜杠
+
+            return app.newProjectConfig={
+                path:config.path,
+                savePathName:config.savePathName,
+                ...config.list[config.type],
+            }
+        },
+        getFormatPoint(format){//获取对应解析格式
+            if(!format)return app.alert('格式不能空');
+            let d=this.getConfig().formatPoint[format];
+            if(typeof d=='string')return d;
+            else if(!d)return format;
+            else return d.point||format;
+        },
+        filterField(row){//忽略当前行翻译
+            this.$set(row,'filter',!row.filter);
+        },
+        getFirstUpperCase(field){//转首字母大写单词
+            return field[0].toUpperCase()+field.slice(1);
+        },
+        setFieldBefore(isClear){//统一加入字段名前缀
+            this.fieldBefore=this.fieldBefore.trim();
+
+            if(/^[a-zA-Z\d]*$/.test(this.fieldBefore)==false)return app.alert('字段名前缀只能使用字母或者数字');
+
+            let old=app.oldFieldBefore||'',
+                fb=!this.fieldBefore||isClear?'':(this.fieldBefore+'.'),
+                reg=new RegExp('$'+old+'\\.');
+            
+            app.each(this.cnList,t=>{
+                let name=old?t.fieldName.replace(old+'.',''):t.fieldName;//去除之前的前缀
+                
+                this.$set(t,'fieldName',fb+name);
+            });
+            app.oldFieldBefore=this.fieldBefore;//存储旧前缀
+        },
+        setRelativePath(){//设置所有文件的相对路径到children.parent
+            if(app.setRelativePathIs)return;//只执行一次，避免性能问题
+            app.setRelativePathIs=true;
+
+            let path=this.getConfig().path.replace(/\/$/,'')+'/';
+            app.each(this.cnList,t=>{
+                app.each(t.children,t1=>{
+                    t1.parent.relativePath=t1.parent.filePath.replace(path,'');//存储相对路径
+                    t1.parent.relativePathList=t1.parent.relativePath.split('/');//存储数组格式相对路径
+                    t1.parent.relativePathList.splice(t1.parent.relativePathList.length-1,1);//删除最后一个文件名
+                })
+            })
+        },
+        setCatalogBefore(){//按目录追溯前缀
+            this.setFieldBefore(true);//清空之前的前缀
+
+            this.setRelativePath();//设置相对路径
+
+            let deep=this.catalogBeforeNum;//初始化目录深度
+            app.each(this.cnList,t=>{
+                let name='',
+                    oldName=t.oldCatalogBefore,
+                    deepArr;//存储当前字段下能一致的目录深度
+
+                if(deep){
+                    app.each(t.children,(t1,i1)=>{//获取catalogBeforeNum深度范围内文件路径目录一致的最深值
+                        let arr=t1.parent.relativePathList;
+                        if(!deepArr){
+                            deepArr=arr.concat();
+                            deepArr.splice(deep,arr.length-deep);
+                        }
+                        for(let x=0;x<deep&&x<arr.length;x++){
+                            if(deepArr){
+                                if(!deepArr[x])break;//已达到最深
+                                if(deepArr[x]!=arr[x]){
+                                    deepArr.splice(x,deepArr.length-x);
+                                    break;//此次深度下值出现不一致，停止
+                                }
+                            }
+                        }
+                    });
+                }
+
+                if(deepArr&&deepArr.length){
+                    name=deepArr.join('.');
+                    if(name)name+='.';
+                }
+
+                if(oldName)t.fieldName=t.fieldName.replace(oldName,'');//清除上一次的目录名
+                
+                this.$set(t,'fieldName',name+t.fieldName);
+                this.$set(t,'oldCatalogBefore',name);
+            })
+
+
+            this.setFieldBefore();//恢复之前的前缀
+        },
+        autoFieldName(row){//自动设置字段名（驼峰命名）
+            let fieldList=row.en.split(/[^a-z\d]+/i),fieldName='',keyNum=0;
+            app.each(fieldList,(val)=>{
+                if(!val)return;
+
+                if(fieldName=='')fieldName=val.toLowerCase();//首字母直接使用小写
+                else fieldName+=this.getFirstUpperCase(val);
+                if(fieldName.length>=this.longName)return false;
+            });
+            this.$set(row,'fieldName',fieldName);
+        },
+        async cnToEn(row){//中文翻译成英文
+            // return console.log(row,888);
+            let data=await app.ajax({
+                url:'/api',
+                // loading:false,
+                msg:'字段翻译中..',
+                data:{fun:'cnToEn',word:row.cn}
+            });
+            this.$set(row,'en',data.en);
+            this.autoFieldName(row);
+        },
+        clearNotes(content){//清除所有注释,避免造成识别出错
+            return content.replace(app.notesReg,(s,s1,s2,s3)=>{
+                let only=app.getOnly('notes');
+                app.notesList[only]={
+                    only,
+                    content:s,
+                };
+                return app.getOnlyWrite(only);
+            });
+        },
+        setNotes(content){//恢复被清理的注释
+            return content.replace(app.notesSet,(s,only)=>{
+                let data=app.notesList[only];
+                if(data)return data.content;
+                else return s;
+            });
+        },
+        setKeyNum(){//设置自增量key
+            if(this.projectConfig.translateRule=='auto')return false;
+            let keyNum=0;
+            app.each(this.cnList,(t)=>{
+                this.$set(t,'fieldName','key'+(++keyNum))
+            })
+        },
+        getFineCn({content,children,type='lable',parent}){//精细拆分
+            return content.replace(app[`${type}CnFine`],function(s,s1,s2,s3){
+
+                is=true;
+                let only=app.getOnly(type);
+                let data=children[only]={
+                    content:s2,
+                    type,
+                    only,
+                    s1,
+                    s3,
+                    parent,//粗糙匹配结果内容
+                };
+                // that.cnList[s2]=children[only];
+                
+
+                //加入中文统计列表
+                if(!that.cnList[s2]){
+                    that.$set(that.cnList,s2,{cn:s2,children:[],num:0});
+                }
+
+
+                that.cnList[s2].num++;
+                that.cnList[s2].children.push(data);
+                that.cnAllNum++;//统计查找到的总数总数量
+
+
+                if(that.projectConfig.translateRule=='auto')that.cnToEn(that.cnList[s2]);//获取英文
+
+
+                //返回标记信息
+                if(type=='js'||type=='attr')return app.getOnlyWrite(only);//直接去除引号
+                else return `${s1}${app.getOnlyWrite(only)}${s3}`;
+            });
+        },
+        getRoughCn({content,children,filePath,type='lable',index}){//粗糙拆分-获取单文件中的匹配中文内容标签或者js内容块
+            return content.replace(app[`${type}CnRough`],function(s,s1,s2){
+
+                if(type=='lable'&&s1.toLowerCase()=='script')return s;//属于js部分
+
+                let only=app.getOnly(type),
+                    data={
+                        content:s,
+                        children:{},//设置下一级信息
+                        filePath,
+                        only,
+                        type,
+                        index,
+                        parent:{
+                            content:s,
+                            only,
+                            index,
+                            filePath
+                        }
+                    },
+                    content1=that.getFineCn(data);
+                
+                data.content=content1;
+                children[only]=data;
+                return app.getOnlyWrite(only);//返回标记信息
+            })
+        },
+        splitHtml(json){//单文件内容拆分提取中文（html/script）
+            let content=this.clearNotes(json.content);//清理注释
+
+            json.children={};//匹配中文的子目录
+
+            let go=(is,type)=>{//执行函数
+                
+                if(is){
+                    content=this.getRoughCn({
+                        content,
+                        index:json.index,
+                        filePath:json.filePath,
+                        children:json.children,//子节点信息{''}
+                        type
+                    });
+                }
+            }
+
+            switch(this.getFormatPoint(json.format)){//解析指向格式
+                case 'html':
+                    app.each(app.cnConfig,go);
+                break;
+                case 'js':
+                    if(app.cnConfig[json.format])go(true,'js');
+                break;
+            }
+
+            json.content=content;
+            return json;
+        },
+        setCnList(list){//设置中文列表
+            // dom=$('<div>').html(list[30].data);
+            console.log('开始匹配');
+            list.forEach((data,index)=>{
+                switch(data.format){
+                    case'vue':case'html':case 'js':
+                        app.fileDomList.push(this.splitHtml({
+                            index:app.fileDomList.length,
+                            ...data,
+                            index,
+                        }));
+                    break;
+                }
+            });
+            that.fileNum=list.length;
+            localStorage.oldNumList=that.cnAllNum;//记录上一次数量
+
+            console.log('匹配结束');
+        },
+        on(data){//显示对应行
+            this.$set(data,'on',data.on?'':'show');
+        },
+        getI18(d3,fieldName,d2){//获取当前对应的i18写法
+            let projectType=this.getConfig().type,
+                getFun=app.getI18[projectType];
+            
+            if(!getFun)console.error('请在app中编写对应的getI18写法函数');
+            else return app.getI18[projectType]({d3,fieldName,d2});
+        },
+        setValContent(data,child,val){//设置值到内容中(反向解析被替换的only)
+            let reg=app.getOnlyReg({only:child.only});
+            let log=child.only,is=false;
+            data.contentI18=data.contentI18.replace(reg,function(){
+                is=true;
+                return val;
+            });
+            // child.contentI18=undefined;//清空缓存值
+            if(is==false)console.log('未被查找运行的bug only',child.only);
+        },
+        getCeverseCnConfig(){
+            if(app.reverseCnConfig)return app.reverseCnConfig;
+            let arr=[];
+            app.each(app.cnConfig,(is,type)=>{
+                if(is)arr.push(type);
+            });
+            return app.reverseCnConfig=arr.reverse();
+        },
+        getI18Content(){//反向解析最终结果（contentI18为解析值）
+            let i18List=[];
+            app.fileDomList.forEach((d1,i1)=>{//文件遍历
+                d1.contentI18=d1.content;
+                app.each(this.getCeverseCnConfig(),(type,index)=>{//反向解析 js、attr、lable
+                    app.each(d1.children,(d2,i2)=>{//文件粗糙匹配遍历
+                        if(index==0)d2.contentI18=d2.content;//存储替换内容，仅第一次执行，避免被替换错误
+
+                        if(d2.type!=type)return;
+
+                        app.each(d2.children,(d3,i3)=>{//文件精细匹配遍历
+
+                            let row=this.cnList[d3.content];
+
+                            if(
+                                row.filter!==false&&//被忽略的字段
+                                row.fieldName
+                            ){
+                                let i18n=this.getI18(d3,row.fieldName,d2);
+                                this.setValContent(d2,d3,i18n);
+                            }
+                            else{//恢复原有内容
+                                let content=d3.content;
+
+                                //补齐之前被吃掉的引号
+                                if(d3.type=='js'||d3.type=='attr')content=d3.s1+content+d3.s3;
+
+                                this.setValContent(d2,d3,content);
+                            }
+                        });
+                        this.setValContent(d1,d2,d2.contentI18);//恢复d1的最终内容值到i18
+                    });
+                })
+                i18List.push({
+                    filePath:d1.filePath,
+                    format:d1.format,
+                    content:this.setNotes(d1.contentI18),//恢复注释
+                })
+            });
+
+            return i18List;
+        },
+        getLanguageJson(){//获取中英文语言包
+            let lngCn={},lngEn={},is=true;
+            app.each(this.cnList,data=>{
+                if(data.filter)return;//被忽略的字段
+                let dcn=app.setJsonVal(lngCn,data.fieldName,data.cn);
+                if(dcn.error){
+                    app.alert(dcn.error);
+                    is=false;
+                    document.getElementById('inputField'+data.cn).focus();
+                    return false;
+                }
+                let den=app.setJsonVal(lngEn,data.fieldName,data.en);
+            });
+            if(is)return {lngCn:JSON.stringify(lngCn),lngEn:JSON.stringify(lngEn)};
+            else return is;
+        },
+        async submit(){//最终保存
+            let lng=this.getLanguageJson();
+            if(lng==false)return;//获取语言包错误
+
+            let fileList=this.getI18Content();
+            // console.log(d,d[10].content);
+            
+            let data=await app.ajax({
+                url:'/api',
+                type:'post',
+                msg:'数据提交中..',
+                data:{fun:'saveFileList',fileList,lng,config:this.getConfig()}
+            });
+            app.alert(data.msg,'success');
+        }
+    }
+})
+
+</script>
+</html>
