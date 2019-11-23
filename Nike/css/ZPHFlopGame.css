@@ -1,0 +1,81 @@
+/* ZPHFlopGame 的默认样式 */
+
+body {
+    text-align: center;
+    /*word-spacing: 60px;*/
+}
+
+.flop/*, .gameMain table */{
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.flop table {
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing:30px 20px;
+}
+.flop td {
+    width: 90px;
+    /*background: rgba(65,74,78,.8);*/
+    /*background: rgba(211,217,220,.5);*/
+    background: rgba(0,255,100,.8);
+    border-radius: 8px;
+    visibility: visible;
+    opacity: 1;
+    color: #303030;
+    cursor: pointer;
+    -webkit-filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 1));
+    text-align: center;
+    font-size: 18px;
+    line-height: 40px;
+    transition: opacity 2s;
+}
+.flop td {
+    background-color: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+    opacity: 0.7;
+}
+.flop button {
+    width: 100px;
+    height: 50px;
+    /*background: rgba(0,0,255,.3);*/
+    /*background-color: rgba(255,255,255,.5);*/
+    background-color: transparent;
+    border: 2px solid #fff;
+    /*border-style: none;*/
+    border-radius: 10px;
+    margin: 20px 25px;
+    /*margin-top: 20px;*/
+    -webkit-filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
+    outline: none;
+    font: 700 16px/50px "微软雅黑";
+    cursor: pointer;
+    color: #fff;
+    opacity: 0.7;
+}
+.flop button:hover {
+    -webkit-filter: drop-shadow(3.5px 3.5px 3.5px rgba(0, 0, 0, 1));
+}
+.flop-time {
+    /*background-color: red;*/
+    text-align: center;
+    font-size: 50px;
+    position: absolute;
+    left: 10%;
+    bottom: 10%;
+    background-color: transparent;
+    /*border: 2px solid #fff;*/
+    -webkit-filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
+    color: #fff;
+    opacity: 0.7;
+    cursor: default;
+}

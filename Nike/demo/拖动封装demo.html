@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #demo {
+            width: 150px;
+            height: 150px;
+            background-color: rgba(255,0,0,.5);
+            position: absolute;
+            top: 100px;
+            left: 100px;
+        }
+        #test {
+            width: 100px;
+            height: 100px;
+            /*margin-top: 25px;*/
+            /*margin-left: 25px;*/
+            background-color: rgba(0,255,0,.5);
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+
+<div id="demo">
+    <div id="test"></div>
+</div>
+
+<script src="drag.js"></script>
+<script src="animate.js"></script>
+<script>
+    // 拖动案例
+    var demo = document.getElementById("demo");
+    var test = document.getElementById("test");
+
+    moveRand(test);
+
+    setSrollBar(test, demo, function () {
+        moveRand(test);
+    });
+
+//    (demo);
+
+
+</script>
+
+</body>
+</html>

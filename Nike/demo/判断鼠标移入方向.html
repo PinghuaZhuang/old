@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #demo {
+            width: 800px;
+            height: 400px;
+            background-color: rgba(255,0,0,.5);
+            position: absolute;
+            top: 100px;
+            left: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="demo"></div>
+
+<script src="common.js"></script>
+<script>
+    var demo = document.getElementById("demo");
+
+//    console.log(getMouseMoveDirection(demo));
+
+    // 在demo的鼠标悬停中使用
+
+    demo.onmouseenter = function (event) {
+        event = event || window.event;
+
+        console.log(getMouseMoveDirection(this, event));
+
+    };
+
+    function getMouseMoveDirection(ele, event) {
+
+        // 获取中心点
+        var halfW = ele.offsetWidth / 2;
+        var halfH = ele.offsetHeight / 2;
+
+        // 获取左上角的坐标
+        var eleX = ele.offsetLeft;
+        var eleY = ele.offsetTop;
+
+        var centPoint = {
+            x: eleX + halfW,
+            y: eleY + halfH
+        }
+
+        // 根据获取的中心点与现在位置的鼠标坐标比较
+        var nowPoint = getMouseXYOfSrc();
+        // 偏离距离
+        var disX = nowPoint.x - centPoint.x;
+        var disY = nowPoint.y - centPoint.y;
+
+        // 角度比例
+        var scale = Math.abs(ele.offsetHeight / ele.offsetWidth);
+//        var scale = 1;
+
+        // 比较
+        if(disY < 0 && Math.abs(disY / disX) >= scale) {
+            // 上方
+            return 1;
+        } else if(disY > 0 && Math.abs(disY / disX) >= scale) {
+            // 下方
+            return 3;
+        } else if(disX < 0 && Math.abs(disY / disX) < scale) {
+            // 左边
+            return 4;
+        } else {
+            // 右边
+            return 2;
+        }
+    }
+
+</script>
+</body>
+</html>

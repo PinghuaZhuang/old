@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #demo {
+            font-size: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="demo">00:00:00</div>
+
+<script>
+
+    var demo = document.getElementById("demo");
+    createTimer(demo);
+//    var h = 0, m = 0, s = 0;
+//    var time = 0;
+
+    // 计时器
+    function createTimer(ele) {
+
+        var h = 0, m = 0, s = 0;
+        var time = 0;
+        setInterval(function () {
+            s++;
+            // 判断
+            if(s >= 60) {
+                s = 0;
+                m++;
+            }
+            if(m >= 60) {
+                m = 0;
+                h++;
+            }
+            if(h >= 24) {
+                h = 0;
+            }
+            time = (h <= 9? "0" + h: h) + ":" + (m <= 9? "0" + m: m) + ":" + (s <= 9? "0" + s: s);
+            ele.innerHTML = time;
+        }, 1000)
+    }
+
+
+</script>
+
+</body>
+</html>

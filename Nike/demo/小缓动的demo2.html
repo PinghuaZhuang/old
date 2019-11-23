@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #demo {
+            width: 400px;
+            height: 400px;
+            background-color: rgba(255,0,0,.5);
+            position: absolute;
+            top: 100px;
+            left: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="demo"></div>
+
+<script>
+    var demo = document.getElementById("demo");
+
+    moveRand(demo);
+    function moveRand(ele) {
+//        var boolean = true;
+        var flag1 = 1;
+        var flag2 = 1;
+        var count = 0;
+//        var step = 1;
+        var count_Max = Math.ceil(Math.random()*1000);
+        var leaderX = ele.offsetLeft;
+        var leaderY = ele.offsetTop;
+//        console.log(count_Max);
+        setInterval(function() {
+            if(++count > count_Max) {
+                count = 0;
+                step = -step;
+                if(Math.random() > 0.5) {
+                    flag1 = -flag1;
+                }
+                if(Math.random() > 0.5) {
+                    flag2 = -flag2;
+                }
+                clearInterval(ele.timer);
+            }
+            var rand1 = Math.ceil(Math.random()*10)/100/3;
+            var rand2 = Math.ceil(Math.random()*10)/100/3;
+            leaderX += flag1 * rand1;
+            leaderY += flag2 * rand2;
+//            console.log(leaderX);
+            ele.style.left = leaderX + "px";
+            ele.style.top = leaderY + "px";
+//            boolean = true;
+        }, 10);
+    }
+
+
+
+
+
+//    move(demo, 300);
+    var leader = demo.offsetLeft;
+    console.log(leader);
+    function move(ele, target) {
+        clearInterval(ele.timer);
+        var step = 0.05;
+
+        ele.timer = setInterval(function () {
+            leader += step;
+            ele.style.left = leader + "px";
+            console.log(ele.style.left);
+            if(Math.abs(target - leader) <= Math.abs(step)) {
+                console.log("move end");
+                clearInterval(ele.timer);
+            }
+        }, 10);
+    }
+</script>
+
+</body>
+</html>

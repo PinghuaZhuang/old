@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #demo {
+            width: 400px;
+            height: 400px;
+            background-color: rgba(255,0,0,.5);
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            /*-webkit-filter: grayscale(100%);*/
+            /*filter: blur(5px);*/
+            /*transition: all 1s ease;*/
+            /*transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg);*/
+
+        }
+        #demo:hover {
+            /*transform:rotateX(30deg) rotateY(30deg) rotateZ(30deg);*/
+        }
+    </style>
+</head>
+<body>
+
+<div id="demo">这是一个寂寞的天, 下载有些伤心的雨</div>
+
+<script>
+    var demo = document.getElementById("demo");
+
+    moveRand(demo);
+    function moveRand(ele) {
+        var boolean = true;
+        var flag = -1;
+        var count = 0;
+        var step = 0.1;
+        setInterval(function() {
+            if(boolean) {
+                console.log("xxx");
+//                console.log(ele);
+                ele._left = ele.offsetLeft;
+                ele._top = ele.offsetTop;
+
+                // 产生一个随机值, 来随机确定方范围(3-5)
+                var rand = 3 + Math.ceil(Math.random()*2);
+                ele._lMax = ele._left + rand;
+                ele._lMin = ele._left - rand;
+                ele._tMax = ele._top + rand;
+                ele._tMin = ele._top - rand;
+
+                var leaderX = ele.offsetLeft;
+                var leaderY = ele.offsetTop;
+
+                console.log(step);
+                boolean = false;
+            }
+
+
+            clearInterval(ele.timer);
+            // 先正方向移动, 再反方向移动到边界
+            ele.timer = setInterval(function () {
+                if(++count > 100) {
+                    count = 0;
+                    flag = -flag;
+                    step = -step;
+                    clearInterval(ele.timer);
+                }
+                leaderX += step;
+                leaderY += step;
+                console.log(leaderX);
+                ele.style.left = leaderX + "px";
+                ele.style.top = leaderY + "px";
+                console.log(ele._lMax, ele._tMax);
+                boolean = true;
+
+            }, 10);
+            console.log("outer");
+        }, 1000);
+    }
+
+
+
+
+
+//    move(demo, 300);
+    var leader = demo.offsetLeft;
+    console.log(leader);
+    function move(ele, target) {
+        clearInterval(ele.timer);
+        var step = 0.05;
+
+        ele.timer = setInterval(function () {
+            leader += step;
+            ele.style.left = leader + "px";
+            console.log(ele.style.left);
+            if(Math.abs(target - leader) <= Math.abs(step)) {
+                console.log("move end");
+                clearInterval(ele.timer);
+            }
+        }, 10);
+    }
+</script>
+
+</body>
+</html>

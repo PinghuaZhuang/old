@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div class="wraper">
+    <div class="section-1">
+        <div class="section-1-outer">
+            <div class="section-1-inner">
+                <div class="shoe-1 shoe"></div>
+                <div class="shoe-2 shoe"></div>
+                <div class="shoe-3 shoe"></div>
+                <div class="shoe-4 shoe"></div>
+                <div class="shoe-5 shoe"></div>
+                <div class="shoe-6 shoe"></div>
+                <div class="shoe-7 shoe"></div>
+            </div>
+        </div>
+    </div>
+    <div class="section-2"></div>
+    <div class="section-3">
+        <div class="section-slide">
+            <ul class="pa">
+                <li><img src="images/showShoe/shoes1.png" alt=""/></li>
+                <li><img src="images/showShoe/shoes5.png" alt=""/></li>
+                <li><img src="images/showShoe/shoes3.png" alt=""/></li>
+                <!--<li><img src="images/showShoe/shoes4.png" alt=""/></li>-->
+                <!--<li><img src="images/showShoe/shoes5.png" alt=""/></li>-->
+                <!--<li><img src="images/showShoe/shoes6.png" alt=""/></li>-->
+                <!--<li><img src="images/showShoe/shoes7.png" alt=""/></li>-->
+            </ul>
+            <div class="section-slide-mini">
+                <ul class="pa">
+                    <li><span>March 2012</span><span>Nike SB Dunk Low Pro</span><b>DENIM</b></li>
+                    <li><span>March 2012</span><span>Nike SB Dunk Low Pro</span><b>REESE</b></li>
+                    <li><span>March 2012</span><span>Nike SB Dunk Low Pro</span><b>GINO</b></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="arrow">
+            <span class="arrow-left pa">〈</span>
+            <span class="arrow-right pa">〉</span>
+        </div>
+        <div class="number pa"><span class="current">1</span>/<span class="total">3</span></div>
+        <span class="shop-now pa"><a href="#">Shop Now</a></span>
+        <span class="shop-dunks pa"><a href="#">Shop All SB Dunks</a></span>
+    </div>
+    <div class="section-4">
+        <div class="section-slide">
+            <ul class="pa">
+                <li><img src="images/showShoe/shoes7.png" alt=""/></li>
+                <li><img src="images/showShoe/shoes5.png" alt=""/></li>
+                <li><img src="images/showShoe/shoes6.png" alt=""/></li>
+                <!--<li><img src="images/showShoe/shoes4.png" alt=""/></li>-->
+                <!--<li><img src="images/showShoe/shoes5.png" alt=""/></li>-->
+                <!--<li><img src="images/showShoe/shoes6.png" alt=""/></li>-->
+                <!--<li><img src="images/showShoe/shoes7.png" alt=""/></li>-->
+            </ul>
+            <div class="section-slide-mini">
+                <ul class="pa">
+                    <li><span>Nike SB Dunk1</span><b>RESERE</b><b>DENIM</b></li>
+                    <li><span>Nike SB Dunk2</span><b>ELITE RE:L</b><b>LOW</b></li>
+                    <li><span>Nike SB Dunk3</span><b>ELITE LOW</b><b>MALTO</b></li>
+                </ul>
+            </div>
+        </div>
+        <div class="arrow">
+            <span class="arrow-left pa">〈</span>
+            <span class="arrow-right pa">〉</span>
+        </div>
+        <div class="number pa"><span class="current">1</span>/<span class="total">3</span></div>
+        <span class="shop-now pa"><a href="#">Shop Now</a></span>
+        <span class="shop-dunks pa"><a href="#">Shop All SB Dunks</a></span>
+    </div>
+</div>
+
+<div class="nav-bar">
+    <div class="logo">
+        <a href="#" id="logo">
+            Nike
+        </a>
+    </div>
+    <ul class="navigation-bar-r clearfix fr">
+        <li class="navigation-bar-r-item" id="watch">
+            <a href="#">Watch</a>
+            <span class="del-line"></span>
+        </li>
+        <li class="navigation-bar-r-item" id="archive">
+            <a href="#">Archive</a>
+            <span class="del-line"></span>
+        </li>
+        <li class="navigation-bar-r-item" id="launch">
+            <a href="#">Launch</a>
+            <span class="del-line"></span>
+        </li>
+        <span class="line"></span>
+        <li class="navigation-bar-r-item" id="share">
+            <a href="#">Share</a>
+            <span class="del-line"></span>
+            <span class="share-top pa"><img src="images/share-1.png" alt=""/></span>
+            <span class="share-bottom pa"><img src="images/share-2.png" alt=""/></span>
+        </li>
+        <li class="navigation-bar-r-item" id="nikeSB">
+            <a href="#">NikeSB.com</a>
+            <span class="del-line"></span>
+        </li>
+    </ul>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/animate.js"></script>
+<script src="js/drag.js"></script>
+<script src="js/jquery-1.11.1.js"></script>
+<script src="js/index_ZP.js"></script>
+<script src="js/index_ZSM.js"></script>
+<script>
+
+    /**
+     *
+     * 没有考虑兼容, 毕竟心里只有谷歌.
+     *
+     *
+     * 修复:
+     *      1. 第三个section部分, 继续滚动的话delLine会消失, 加判断就好
+     *      2. 移动inner遇到shoe会被遮住的bug
+     *      3. 拖动的bug
+     *      4. inner 移动会被shoe阻止的bug
+     *          方法: 修改移动原理. 用鼠标所处位置的比例来移动inner.
+     *
+     * bug:
+     *      1. 鼠标移出左边边界报错的bug
+     *
+     *
+     *
+     */
+
+    window.onload = function () {
+        // 初始化
+        var sectionArr = wraper.children;
+        for(var i=0; i<sectionArr.length; i++) {
+            sectionArr[i]._index = i;
+            sectionArr[i].addEventListener("down", function () {
+                clearTextSelected();
+            });
+        }
+    };
+
+</script>
+
+
+</body>
+</html>
