@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../js/lib/jquery.min-1.72.js"></script>
+</head>
+
+<body>
+
+    <audio id="audio" controls src="../music/薛之谦 - 潮流季.mp3"></audio>
+
+    <script>
+        var lyric, key;
+        window.onload = function () {
+            // 已经被转换为对象了
+            // 原理用的还是 ajax
+
+            $.getJSON("../lyric/薛之谦 - 潮流季.json", function (data) {
+                lyric = data;
+            });
+            // $.getJSON("../data/songData.json", function (data) {
+            //     console.log(data);
+            // });
+
+            var audio = document.getElementById("audio");
+            console.dir(audio);
+
+            // 17.799351 毫秒计算 要装换
+            console.log(audio.currentTime);
+            // var curTime = packedTime();
+
+            // 播放进行时
+            audio.onplay = function (e) {
+
+                audio._timer = window.setInterval(function () {
+                    key = packedTimeTurn(this.currentTime);
+                    if(lyric[key]) {
+                        console.log(lyric[key], key);
+                    } else {
+                        // console.log(key);
+                    }
+                }.bind(this), 8);
+            }
+            audio.onpause = function (e) {
+                window.clearInterval(this._timer);
+            }
+
+        }
+
+        // console.log(packedTimeTurn(117.586394));
+        function packedTimeTurn(time) {
+            var now = new Date(time),
+                ms  = Math.floor(time * 100) % 100,
+                s   = Math.floor(time),
+                m   = Math.floor(s / 60);
+            return "_" + (m < 10 ? "0" + m : m) + "_" + (s < 10 ? "0" + s : s) + "_" + (ms < 10 ? "0" + ms : ms);
+        }
+
+        // console.log(packedTime("_00_01_01"));
+
+        // 传入格式为 "_00_01_01" 返回毫秒
+        function packedTime(time) {
+
+            var time = time.split("_").slice(1).reduce(function (pre, cur, index) {
+                switch (index) {
+                    case 1:
+                        pre *= 60 * 60 * 1000;
+                        cur *= 60 * 100;
+                        break;
+                    default:
+                        cur *= 1000;
+                }
+                return pre + cur;
+            });
+
+            if (!isNaN(time)) {
+                return time;
+            }
+
+            return -1;
+        }
+
+
+
+
+
+
+
+        // 理解 jQuery 中的原型链
+        console.dir($);
+        console.dir($.prototype);
+        console.log($("body").__proto__ === $.prototype); // ==> true
+    </script>
+
+</body>
+
+</html>

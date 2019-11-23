@@ -1,0 +1,42 @@
+[
+  {
+    "name": "demo-薛之谦 - 潮流季.mp3",
+    "size": 9639330, "type": "audio/mp3",
+    "path": "./music/",
+    "singer": "薛之谦",
+    "lyric": "none"
+  }, {
+    "name": "demo-薛之谦 - 我害怕.mp3",
+    "size": 9774210,
+    "type": "audio/mp3",
+    "path": "./music/",
+    "singer": "薛之谦",
+    "lyric": "none"
+  }, {
+    "name": "demo-张敬轩 - 期待.mp3",
+    "size": 10476790, "type": "audio/mp3",
+    "path": "./music/", "singer": "张敬轩",
+    "lyric": "none"
+  }, {
+    "name": "薛之谦 - 潮流季.mp3",
+    "size": 9639330,
+    "type": "audio/mp3",
+    "path": "./music/",
+    "singer": "薛之谦",
+    "lyric": "none"
+  }, {
+    "name": "薛之谦 - 我害怕.mp3",
+    "size": 9774210,
+    "type": "audio/mp3",
+    "path": "./music/",
+    "singer": "薛之谦",
+    "lyric": "none"
+  }, {
+    "name": "张敬轩 - 期待.mp3",
+    "size": 10476790,
+    "type": "audio/mp3",
+    "path": "./music/",
+    "singer": "张敬轩",
+    "lyric": "none"
+  }
+]

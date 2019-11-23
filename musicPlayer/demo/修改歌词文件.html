@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <input id="inp" type="file" name="" value="点击">
+
+    <script>
+        var inp = document.getElementById("inp");
+
+        inp.onchange = function (e) {
+            var files = Array.from(e.target.files);
+            files.forEach(function (file, index) {
+                var reader = new FileReader();
+                console.log('reader: ', reader);
+                reader.readAsText(file);
+                reader.onload = function (e) {
+                    var text = e.target.result;
+                    var blob = new Blob([text], { text: "text/plain" });
+                    var url = window.URL.createObjectURL(blob);
+                    // 模拟点击
+                    var a = document.createElement("a");
+                    a.setAttribute("href", url);
+                    a.setAttribute("download", file.name);
+                    a.onclick = function () {
+                        window.setTimeout(function () {
+                            // 释放 blob 对象
+                            window.URL.revokeObjectURL(url);
+                        }, 0)
+                    }
+                    a.click();
+                }
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>

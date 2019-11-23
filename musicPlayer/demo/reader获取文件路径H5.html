@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<input id="inp" type="file" multiple/>
+<audio src="" id="demo" controls autoplay></audio>
+
+<script>
+    var demo = document.getElementById("demo");
+    var inp = document.getElementById("inp");
+    var url = [];
+    var zp = {
+        prev: document.getElementById("prev"),
+        next: document.getElementById("next"),
+        txt: document.getElementById("txt")
+    };
+
+    inp.onchange = function (e) {
+        console.log(inp.files[0].webkitRelativePath);
+        var files = Array.from(inp.files);
+        files.forEach(function (file) {
+            var reader = new FileReader();
+            console.log(file.webkitRelativePath);
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                url.push(e.target.result);
+                demo.setAttribute("src", url[0]);
+                demo.load();
+            };
+        });
+    };
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

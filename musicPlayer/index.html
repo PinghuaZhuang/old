@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="./js/common.js"></script>
+    <style>
+        button {
+            margin-top: 20px;
+            padding: 5px;
+        }
+
+        input {
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="KuGou" class="musicView log">
+        <audio id="kg" src="" controls loop></audio>
+        <br/>
+        <button data-target="prev">上一首</button>
+        <button data-target="next">下一首</button>
+        <button data-target="addSongs">添加歌曲</button>
+        <button data-target="addList">添加列表</button>
+        <button data-target="delList">删除当前列表</button>
+        <br/>
+        <button data-target="showList">显示当前歌单</button>
+        <button data-target="showAllList">显示所有歌单</button>
+        <button data-target="toggleList">切换歌曲列表</button>
+        <br/><br/>
+        <input type="search" data-target="searchSong" placeholder="请输入歌名/索引/歌手" tabindex="1" /><br/>
+        <br/>
+        <h2 data-target="txt"></h2>
+        <br/>
+    </div>
+
+    <div id="WangYi" class="musicView log">
+        <audio id="wy" src="" controls loop></audio>
+        <br/>
+        <button data-target="prev">上一首</button>
+        <button data-target="next">下一首</button>
+        <button data-target="addSongs">添加歌曲</button>
+        <button data-target="addList">添加列表</button>
+        <button data-target="delList">删除当前列表</button>
+        <br/>
+        <button data-target="showList">显示当前歌单</button>
+        <button data-target="showAllList">显示所有歌单</button>
+        <button data-target="toggleList">切换歌曲列表</button>
+        <br/><br/>
+        <input type="search" data-target="searchSong" placeholder="请输入歌名/索引/歌手" tabindex="1" /><br/>
+        <br/>
+        <h2 data-target="txt"></h2>
+        <br/>
+    </div>
+
+
+
+    <script src="./js/config.js"></script>
+    <script src="./js/indexV1.4.js"></script>
+    <script>
+
+        window.onload = function () {
+            // 等待 xhr 运行完后执行
+            var timer = setInterval(function () {
+                if (window.zp.PlayerHandle) {
+                    // 酷狗音乐
+                    var kuGou = window.zp.PlayerHandle.newPlayer("KuGou");
+                    // 测试用
+                    // var wy = window.zp.PlayerHandle.newPlayer("WangYi");
+                    clearInterval(timer);
+                }
+            }, 500)
+        };
+
+    </script>
+
+</body>
+
+</html>

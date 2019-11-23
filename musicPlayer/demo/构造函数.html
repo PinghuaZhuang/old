@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script>
+
+    ;(function () {
+        var demo = null;
+        var Person = function (option) {
+            this.name = option.name;
+            this.demo = function Demo() {
+                this.name = name;
+            };
+            demo = Demo;
+        };
+        window.Person = Person;
+        window.demo = demo;
+        console.log(demo);
+
+        window.fn = (function () {
+            return Person;
+        }());
+    }());
+//    var fn = window.fn;
+    var fn = window.demo;
+    console.log(window.demo);
+
+    var p = new fn({name: "xxx"});
+    console.log(p);
+
+</script>
+
+</body>
+</html>
