@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 设置滚动条宽度为 0 */
+        ::-webkit-scrollbar {
+            width: 0;
+        }
+
+        canvas {
+            /* ie 9 不支持 flex direction */
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="demo"></canvas>
+
+    <script src="./js/zp-flapyBird.js"></script>
+    <script>
+        var img = null,     // 存放临时图片
+            counter = 0,    // 计数器
+            fb = null;      // 创建的对象(导演)
+
+        var canvas = document.querySelector("#demo");
+        setWH(canvas);
+
+        var config = {
+            imgNames: ["birds", "land", "pipe1", "pipe2", "sky"],
+            imgs: {},
+            imgType: ".png",
+            imgUrlStart: "./img/"
+        };
+
+
+        config.imgNames.forEach(function (ele) {
+            img = new Image();
+            this.imgs[ele] = img;
+            img.src = this.imgUrlStart + ele + this.imgType;
+            img.onload = function () {
+                if (5 === ++counter) {
+                    fb = new FlapyBird(canvas, config.imgs);
+                    fb._name = "fb";
+                    console.log(fb.toString(), fb);
+                }
+            };
+        }, config);
+
+        // 一个下午终于解决bug, 完美
+        // 根据屏幕尺寸, 实时自适应
+        window.onresize = function () {
+            setWH(canvas);
+            fb._initResize();
+        };
+
+        // 修改元素宽高
+        function setWH(ele) {
+            ele.width = window.innerWidth;
+            ele.height = window.innerHeight;
+        }
+
+    </script>
+
+</body>
+
+</html>
